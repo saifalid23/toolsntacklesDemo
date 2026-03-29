@@ -1,0 +1,161 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(26, 35, 50, 0.97);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  height: var(--navbar-height);
+}
+
+.navbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+}
+
+/* ── Brand ── */
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  z-index: 1010;
+}
+
+.navbar-logo-icon {
+  font-size: 1.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  background: var(--color-orange);
+  border-radius: var(--radius-md);
+}
+
+.navbar-brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.navbar-brand-name {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.15rem;
+  color: var(--color-white);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.navbar-brand-tagline {
+  font-size: 0.7rem;
+  color: var(--color-gray-400);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+}
+
+/* ── Nav links ── */
+.navbar-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+.navbar-link {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-gray-300);
+  transition: color var(--transition-fast);
+  padding: var(--space-sm) 0;
+}
+
+.navbar-link:hover {
+  color: var(--color-white);
+}
+
+.navbar-link--phone {
+  color: var(--color-orange-light);
+}
+
+.navbar-link--phone:hover {
+  color: var(--color-orange);
+}
+
+.navbar-cta {
+  font-size: 0.85rem;
+}
+
+/* ── Hamburger ── */
+.navbar-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 44px;
+  height: 44px;
+  z-index: 1010;
+  padding: 10px;
+}
+
+.navbar-toggle span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: var(--color-white);
+  border-radius: 2px;
+  transition: all var(--transition-base);
+  transform-origin: center;
+}
+
+.navbar-toggle--open span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.navbar-toggle--open span:nth-child(2) {
+  opacity: 0;
+}
+
+.navbar-toggle--open span:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .navbar-toggle {
+    display: flex;
+  }
+
+  .navbar-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--color-navy-dark);
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--space-xl);
+    padding: var(--space-2xl);
+    transform: translateX(100%);
+    transition: transform var(--transition-slow);
+    z-index: 1005;
+  }
+
+  .navbar-nav--open {
+    transform: translateX(0);
+  }
+
+  .navbar-link {
+    font-size: 1.25rem;
+    color: var(--color-white);
+  }
+
+  .navbar-cta {
+    font-size: 1rem;
+    width: 100%;
+    justify-content: center;
+  }
+}

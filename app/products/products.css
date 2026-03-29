@@ -1,0 +1,137 @@
+/* ── Products page hero ── */
+.products-hero {
+  background: linear-gradient(135deg, var(--color-navy) 0%, var(--color-steel-dark) 100%);
+  padding: var(--space-2xl) 0;
+}
+
+.products-hero-title {
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
+  color: var(--color-white);
+  margin-bottom: var(--space-xs);
+}
+
+.products-hero-subtitle {
+  color: var(--color-gray-400);
+  font-size: 0.95rem;
+}
+
+/* ── Layout ── */
+.products-layout {
+  padding-top: var(--space-xl);
+  padding-bottom: var(--space-3xl);
+}
+
+.products-top-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+  flex-wrap: wrap;
+}
+
+.products-content {
+  display: flex;
+  gap: var(--space-xl);
+  align-items: flex-start;
+}
+
+.products-sidebar {
+  width: 280px;
+  flex-shrink: 0;
+  display: none;
+}
+
+.products-grid-area {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ── Active filter chips ── */
+.active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+}
+
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.35rem 0.75rem;
+  background: var(--color-steel);
+  color: var(--color-white);
+  border-radius: var(--radius-full);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  border: none;
+}
+
+.filter-chip:hover {
+  background: var(--color-steel-dark);
+}
+
+/* ── Grid ── */
+.products-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+}
+
+/* ── Empty state ── */
+.products-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-4xl) var(--space-lg);
+  gap: var(--space-md);
+}
+
+.products-empty-icon {
+  font-size: 3rem;
+  opacity: 0.5;
+}
+
+.products-empty h3 {
+  font-size: 1.25rem;
+  color: var(--color-navy);
+}
+
+.products-empty p {
+  color: var(--color-text-secondary);
+}
+
+/* ── Responsive ── */
+@media (min-width: 480px) {
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .products-sidebar {
+    display: block;
+  }
+
+  /* Hide the inline mobile filter in top bar on desktop */
+  .products-top-bar .filter-mobile-toggle,
+  .products-top-bar .filter-panel,
+  .products-top-bar .filter-backdrop {
+    display: none !important;
+  }
+
+  .products-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .products-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

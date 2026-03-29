@@ -1,0 +1,237 @@
+/* ── Mobile toggle ── */
+.filter-mobile-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-weight: 600;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 0.6rem 1rem;
+  min-height: 48px;
+}
+
+.filter-badge {
+  background: var(--color-orange);
+  color: var(--color-white);
+  font-size: 0.7rem;
+  font-weight: 700;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+}
+
+/* ── Backdrop ── */
+.filter-backdrop {
+  display: none;
+}
+
+/* ── Panel ── */
+.filter-panel {
+  display: none;
+  flex-direction: column;
+  gap: var(--space-lg);
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+}
+
+.filter-panel-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.filter-panel-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-navy);
+  flex: 1;
+}
+
+.filter-clear-all {
+  font-size: 0.8rem;
+  color: var(--color-orange);
+  font-weight: 600;
+  transition: color var(--transition-fast);
+}
+
+.filter-clear-all:hover {
+  color: var(--color-orange-dark);
+}
+
+.filter-close-btn {
+  display: none;
+  width: 36px;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  color: var(--color-gray-500);
+  font-size: 1rem;
+  transition: background var(--transition-fast);
+}
+
+.filter-close-btn:hover {
+  background: var(--color-gray-100);
+}
+
+/* ── Filter group ── */
+.filter-group {
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--color-border);
+}
+
+.filter-group:first-of-type {
+  border-top: none;
+  padding-top: 0;
+}
+
+.filter-group-title {
+  font-size: 0.82rem;
+  color: var(--color-gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 700;
+  margin-bottom: var(--space-sm);
+}
+
+/* ── Select ── */
+.filter-select {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-size: 0.88rem;
+  cursor: pointer;
+  min-height: 42px;
+  appearance: auto;
+}
+
+.filter-select:focus {
+  outline: none;
+  border-color: var(--color-steel);
+  box-shadow: 0 0 0 2px rgba(45, 95, 138, 0.1);
+}
+
+/* ── Checkboxes ── */
+.filter-options {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.filter-checkbox {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 0.45rem 0.5rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  min-height: 38px;
+}
+
+.filter-checkbox:hover {
+  background: var(--color-gray-50);
+}
+
+.filter-checkbox input {
+  display: none;
+}
+
+.filter-checkbox-custom {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--color-gray-300);
+  border-radius: 4px;
+  flex-shrink: 0;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.filter-checkbox input:checked + .filter-checkbox-custom {
+  background: var(--color-steel);
+  border-color: var(--color-steel);
+}
+
+.filter-checkbox input:checked + .filter-checkbox-custom::after {
+  content: '✓';
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 700;
+}
+
+.filter-checkbox-label {
+  font-size: 0.88rem;
+  color: var(--color-text);
+}
+
+/* ── Mobile apply ── */
+.filter-mobile-apply {
+  display: none;
+}
+
+/* ── Desktop ── */
+@media (min-width: 1024px) {
+  .filter-mobile-toggle {
+    display: none;
+  }
+
+  .filter-panel {
+    display: flex;
+    position: sticky;
+    top: calc(var(--navbar-height) + var(--space-lg));
+    max-height: calc(100vh - var(--navbar-height) - var(--space-2xl));
+    overflow-y: auto;
+  }
+}
+
+/* ── Mobile drawer ── */
+@media (max-width: 1023px) {
+  .filter-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1100;
+    animation: fadeIn 0.2s ease;
+  }
+
+  .filter-panel {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1200;
+    max-height: 85vh;
+    overflow-y: auto;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    transform: translateY(100%);
+    transition: transform var(--transition-slow);
+    padding-bottom: var(--space-2xl);
+  }
+
+  .filter-panel--open {
+    display: flex;
+    transform: translateY(0);
+  }
+
+  .filter-close-btn {
+    display: flex;
+  }
+
+  .filter-mobile-apply {
+    display: block;
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--color-border);
+  }
+}

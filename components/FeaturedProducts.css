@@ -1,0 +1,26 @@
+.featured-products {
+  background: var(--color-bg-alt);
+}
+
+.featured-products-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+}
+
+.featured-products-cta {
+  text-align: center;
+  margin-top: var(--space-2xl);
+}
+
+@media (min-width: 480px) {
+  .featured-products-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .featured-products-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

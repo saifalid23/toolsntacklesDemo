@@ -1,0 +1,29 @@
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-md);
+}
+
+@media (min-width: 768px) {
+  .categories-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-lg);
+  }
+}
+
+@media (min-width: 1024px) {
+  .categories-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  /* Make the last 3 items span the bottom row evenly */
+  .categories-grid .category-card:nth-child(5) {
+    grid-column: 1 / 2;
+  }
+  .categories-grid .category-card:nth-child(6) {
+    grid-column: 2 / 3;
+  }
+  .categories-grid .category-card:nth-child(7) {
+    grid-column: 3 / 4;
+  }
+}
