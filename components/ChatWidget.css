@@ -272,7 +272,39 @@
   cursor: not-allowed;
 }
 
-/* Mobile Guardrails */
+/* Success Message Styling */
+.lead-success-msg {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  text-align: center;
+  margin: var(--space-md) 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  animation: fadeIn 0.5s ease forwards;
+}
+
+.success-icon {
+  font-size: 2.5rem;
+  margin-bottom: var(--space-xs);
+  animation: scaleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.lead-success-msg p {
+  color: #166534;
+  font-weight: 500;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
 @media (max-width: 480px) {
   .chat-window {
     width: 92vw;

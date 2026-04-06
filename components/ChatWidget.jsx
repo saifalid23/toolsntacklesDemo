@@ -7,16 +7,32 @@ export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([
-    { role: 'assistant', content: 'Hi! I\'m The Tool Shop HYD Assistant. How can I help you today?' }
+    { role: 'assistant', content: 'Welcome to The Tool Shop HYD! 🛠️ How can I help you today? Select a category below or ask me anything.' }
   ]);
+  const [isLeadCaptured, setIsLeadCaptured] = useState(false);
 
   const quickActions = [
-    { label: '🕒 Store Location & Hours', query: 'Where is your store and what are your operating hours?' },
-    { label: '🛠️ Repair Services', query: 'What kind of repair services do you offer?' },
-    { label: '😂 Tell me a Joke', query: 'Tell me a tool-related joke!' }
+    { label: '🌩️ Power Tools', query: 'FAST_PATH_POWER_TOOLS' },
+    { label: '📦 Bulk Quote', query: 'FAST_PATH_BULK_QUOTE' },
+    { label: '🛠️ Repair Services', query: 'Tell me about your repair services.' },
+    { label: '😂 Tell a Joke', query: 'Tell me a tool-related joke!' }
   ];
 
   const handleQuickAction = (query) => {
+    // Fast Path logic
+    if (query === 'FAST_PATH_POWER_TOOLS') {
+      const userMsg = { role: 'user', content: 'Power Tools' };
+      const assistantMsg = { role: 'assistant', content: 'We stock Bosch, DeWalt, and Makita. Drills start at ₹3,500.' };
+      setMessages(prev => [...prev, userMsg, assistantMsg]);
+      return;
+    }
+    if (query === 'FAST_PATH_BULK_QUOTE') {
+      const userMsg = { role: 'user', content: 'Bulk Quote' };
+      const assistantMsg = { role: 'assistant', content: 'Wholesale rates available for 5+ units. What are your project requirements?' };
+      setMessages(prev => [...prev, userMsg, assistantMsg]);
+      return;
+    }
+
     setInput(query);
     setTimeout(() => {
       const fakeEvent = { preventDefault: () => {} };
@@ -42,6 +58,18 @@ export default function ChatWidget() {
     const userMessage = { role: 'user', content: query };
     setMessages(prev => [...prev, userMessage]);
     if (!customQuery) setInput('');
+
+    // Lead detection logic (Logic Trigger)
+    const phoneRegex = /(?:\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/g;
+    const isCallbackRequest = query.toLowerCase().includes('callback') || query.toLowerCase().includes('call me');
+    
+    if (phoneRegex.test(query) || isCallbackRequest) {
+      setTimeout(() => {
+        setIsLeadCaptured(true);
+      }, 1000);
+      return;
+    }
+
     setIsLoading(true);
 
     try {
@@ -96,7 +124,7 @@ export default function ChatWidget() {
               </div>
             ))}
             
-            {messages.length === 1 && (
+            {messages.length === 1 && !isLeadCaptured && (
               <div className="quick-actions">
                 {quickActions.map((action, idx) => (
                   <button 
@@ -110,7 +138,14 @@ export default function ChatWidget() {
               </div>
             )}
 
-            {isLoading && (
+            {isLeadCaptured && (
+              <div className="lead-success-msg animate-fade-in">
+                <div className="success-icon">✅</div>
+                <p>Thank you! Our manager will call you shortly to discuss your requirements.</p>
+              </div>
+            )}
+
+            {isLoading && !isLeadCaptured && (
               <div className="chat-message chat-message--assistant">
                 <div className="chat-message-content chat-loading-text">
                   The Tool Shop is thinking<span>.</span><span>.</span><span>.</span>
@@ -120,21 +155,24 @@ export default function ChatWidget() {
             <div ref={messagesEndRef} />
           </div>
 
-          <form className="chat-input-form" onSubmit={handleSubmit}>
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask about tools or repairs..."
-              className="chat-input"
-              disabled={isLoading}
-            />
-            <button type="submit" className="chat-send-btn" disabled={isLoading || !input.trim()}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M22 2L11 13M22 2L15 22L11 13M11 13L2 9L22 2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
-          </form>
+          {!isLeadCaptured && (
+            <form className="chat-input-form" onSubmit={handleSubmit}>
+              <input
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Ask about tools or repairs..."
+                className="chat-input"
+                disabled={isLoading}
+                aria-label="Chat input field"
+              />
+              <button type="submit" className="chat-send-btn" disabled={isLoading || !input.trim()} aria-label="Send message">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M22 2L11 13M22 2L15 22L11 13M11 13L2 9L22 2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+            </form>
+          )}
         </div>
       )}
 

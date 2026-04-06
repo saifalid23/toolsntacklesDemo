@@ -1,12 +1,15 @@
+import Image from 'next/image';
 import './ProductCard.css';
 
 export default function ProductCard({ product }) {
   return (
     <article className="product-card" id={`product-${product.id}`}>
       <div className="product-card-image-wrap">
-        <img
+        <Image
           src={product.image}
           alt={product.name}
+          fill
+          sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 25vw"
           className="product-card-image"
           loading="lazy"
         />
