@@ -13,15 +13,15 @@ export default function ContactCTA() {
         </div>
         <div className="contact-cta-actions">
           <a
-            href="tel:09959048707"
+            href="tel:09154905787"
             className="btn btn-lg contact-cta-call"
             id="cta-call-btn"
           >
             📞 Call Now
-            <span className="contact-cta-number">099590 48707</span>
+            <span className="contact-cta-number">9154905787</span>
           </a>
           <a
-            href="https://wa.me/919959048707?text=Hi%2C%20I%20need%20help%20finding%20a%20product"
+            href="https://wa.me/919154905787?text=Hi%2C%20I%20need%20help%20finding%20a%20product"
             target="_blank"
             rel="noopener noreferrer"
             className="btn btn-lg contact-cta-whatsapp"

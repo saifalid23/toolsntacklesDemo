@@ -25,7 +25,7 @@ export default function LocationMap() {
               <div>
                 <h3 className="location-label">Phone</h3>
                 <p>
-                  <a href="tel:09959048707" className="location-link">
+                  <a href="tel:09154905787" className="location-link">
                     099590 48707
                   </a>
                 </p>
@@ -44,7 +44,7 @@ export default function LocationMap() {
               <div>
                 <h3 className="location-label">WhatsApp</h3>
                 <a
-                  href="https://wa.me/919959048707"
+                  href="https://wa.me/919154905787"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="location-link"
@@ -63,7 +63,7 @@ export default function LocationMap() {
               allowFullScreen=""
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              title="Tools & Tackles store location"
+              title="The Tool Shop HYD store location"
             ></iframe>
           </div>
         </div>

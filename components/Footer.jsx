@@ -10,7 +10,7 @@ export default function Footer() {
             <div className="footer-logo">
               <span className="footer-logo-icon">🔧</span>
               <div>
-                <span className="footer-brand-name">Tools & Tackles</span>
+                <span className="footer-brand-name">The Tool Shop HYD</span>
                 <span className="footer-brand-tagline">Hardware Store</span>
               </div>
             </div>
@@ -47,7 +47,7 @@ export default function Footer() {
               <li>📍 Ranigunj, Secunderabad, Telangana</li>
               <li>
                 📞{' '}
-                <a href="tel:09959048707">099590 48707</a>
+                <a href="tel:09154905787">099590 48707</a>
               </li>
               <li>🕐 Mon–Sat: 9 AM – 8 PM</li>
               <li>🕐 Sun: 10 AM – 6 PM</li>
@@ -56,7 +56,7 @@ export default function Footer() {
         </div>
 
         <div className="footer-bottom">
-          <p>© {new Date().getFullYear()} Tools & Tackles. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} The Tool Shop HYD. All rights reserved.</p>
         </div>
       </div>
     </footer>

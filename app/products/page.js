@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 import ProductsClient from './ProductsClient';
 
 export const metadata = {
-  title: 'Products — Tools & Tackles | Hardware Store, Secunderabad',
+  title: 'Products — The Tool Shop HYD | Hardware Store, Secunderabad',
   description:
     'Browse hand tools, power tools, electrical supplies, plumbing fittings, fasteners, safety gear & industrial supplies. Search and filter products from Bosch, Stanley, Makita & more.',
 };

@@ -13,7 +13,7 @@ export default function Navbar() {
         <Link href="/" className="navbar-brand" id="navbar-brand">
           <span className="navbar-logo-icon">🔧</span>
           <div className="navbar-brand-text">
-            <span className="navbar-brand-name">Tools & Tackles</span>
+            <span className="navbar-brand-name">The Tool Shop HYD</span>
             <span className="navbar-brand-tagline">Hardware Store</span>
           </div>
         </Link>
@@ -25,11 +25,11 @@ export default function Navbar() {
           <Link href="/products" className="navbar-link" onClick={() => setMenuOpen(false)}>
             Products
           </Link>
-          <a href="tel:09959048707" className="navbar-link navbar-link--phone" onClick={() => setMenuOpen(false)}>
+          <a href="tel:09154905787" className="navbar-link navbar-link--phone" onClick={() => setMenuOpen(false)}>
             📞 Call Now
           </a>
           <a
-            href="https://wa.me/919959048707?text=Hi%2C%20I%20would%20like%20to%20know%20about%20your%20products"
+            href="https://wa.me/919154905787?text=Hi%2C%20I%20would%20like%20to%20know%20about%20your%20products"
             target="_blank"
             rel="noopener noreferrer"
             className="btn btn-primary btn-sm navbar-cta"

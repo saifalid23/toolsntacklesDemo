@@ -28,7 +28,7 @@ export default function ProductCard({ product }) {
             </span>
           )}
           <a
-            href={`https://wa.me/919959048707?text=Hi%2C%20I%27m%20interested%20in%20${encodeURIComponent(product.name)}`}
+            href={`https://wa.me/919154905787?text=Hi%2C%20I%27m%20interested%20in%20${encodeURIComponent(product.name)}`}
             target="_blank"
             rel="noopener noreferrer"
             className="btn btn-primary btn-sm product-card-cta"

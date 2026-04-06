@@ -7,7 +7,7 @@ export default function Hero() {
       <div className="hero-bg">
         <img
           src="/images/hero-banner.png"
-          alt="Tools & Tackles hardware store"
+          alt="The Tool Shop HYD hardware store"
           className="hero-bg-image"
         />
         <div className="hero-overlay"></div>
@@ -27,7 +27,7 @@ export default function Hero() {
             Browse Products
           </Link>
           <a
-            href="tel:09959048707"
+            href="tel:09154905787"
             className="btn btn-outline btn-lg hero-call-btn"
             id="hero-call-btn"
           >
