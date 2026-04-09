@@ -62,4 +62,14 @@ export const categories = [
     icon: '🏭',
     productCount: 0,
   },
+  {
+    id: 'servicing',
+    name: 'Professional Tool Servicing',
+    slug: 'servicing',
+    description: 'Expert repair & maintenance for all major power tool brands',
+    image: '/images/servicing.png',
+    icon: '🔧',
+    productCount: 0,
+    path: '/services',
+  },
 ];

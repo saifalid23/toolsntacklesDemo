@@ -7,25 +7,34 @@ export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([
-    { role: 'assistant', content: 'Welcome to The Tool Shop HYD! 🛠️ How can I help you today? Select a category below or ask me anything.' }
+    { role: 'assistant', content: 'Welcome to The Tool Shop HYD! 🛠️ How can I help you today? [Service & Repairs] is now available alongside our tool catalog.' }
   ]);
   const [isLeadCaptured, setIsLeadCaptured] = useState(false);
+  const [showServiceOptions, setShowServiceOptions] = useState(false);
 
-  const quickActions = [
-    { label: '🌩️ Power Tools', query: 'FAST_PATH_POWER_TOOLS' },
+  const mainActions = [
+    { label: '🌩️ Shop Tools', query: 'What tools do you sell?' },
+    { label: '🔧 Service & Repairs', query: 'SERVICE_FLOW_START' },
     { label: '📦 Bulk Quote', query: 'FAST_PATH_BULK_QUOTE' },
-    { label: '🛠️ Repair Services', query: 'Tell me about your repair services.' },
-    { label: '😂 Tell a Joke', query: 'Tell me a tool-related joke!' }
+  ];
+
+  const serviceActions = [
+    { label: 'Drill', query: 'I want to service my Drill' },
+    { label: 'Grinder', query: 'I want to service my Grinder' },
+    { label: 'Saw', query: 'I want to service my Saw' },
+    { label: 'Cutter', query: 'I want to service my Cutter' },
+    { label: 'Other', query: 'I want to service another tool' },
   ];
 
   const handleQuickAction = (query) => {
-    // Fast Path logic
-    if (query === 'FAST_PATH_POWER_TOOLS') {
-      const userMsg = { role: 'user', content: 'Power Tools' };
-      const assistantMsg = { role: 'assistant', content: 'We stock Bosch, DeWalt, and Makita. Drills start at ₹3,500.' };
+    if (query === 'SERVICE_FLOW_START') {
+      const userMsg = { role: 'user', content: 'Service & Repairs' };
+      const assistantMsg = { role: 'assistant', content: 'Which tool requires servicing?' };
       setMessages(prev => [...prev, userMsg, assistantMsg]);
+      setShowServiceOptions(true);
       return;
     }
+
     if (query === 'FAST_PATH_BULK_QUOTE') {
       const userMsg = { role: 'user', content: 'Bulk Quote' };
       const assistantMsg = { role: 'assistant', content: 'Wholesale rates available for 5+ units. What are your project requirements?' };
@@ -33,12 +42,21 @@ export default function ChatWidget() {
       return;
     }
 
-    setInput(query);
-    setTimeout(() => {
-      const fakeEvent = { preventDefault: () => {} };
-      handleSubmit(fakeEvent, query);
-    }, 0);
+    setShowServiceOptions(false);
+    handleSubmit({ preventDefault: () => {} }, query);
   };
+
+  useEffect(() => {
+    const handleExternalMessage = (event) => {
+      const { message } = event.detail;
+      setIsOpen(true);
+      handleSubmit({ preventDefault: () => {} }, message);
+    };
+
+    window.addEventListener('open-chat-service', handleExternalMessage);
+    return () => window.removeEventListener('open-chat-service', handleExternalMessage);
+  }, [messages]);
+
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
 
@@ -51,13 +69,14 @@ export default function ChatWidget() {
   }, [messages, isOpen]);
 
   const handleSubmit = async (e, customQuery = null) => {
-    e.preventDefault();
+    e?.preventDefault();
     const query = customQuery || input;
     if (!query.trim() || isLoading) return;
 
     const userMessage = { role: 'user', content: query };
     setMessages(prev => [...prev, userMessage]);
     if (!customQuery) setInput('');
+    setShowServiceOptions(false);
 
     // Lead detection logic (Logic Trigger)
     const phoneRegex = /(?:\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/g;
@@ -124,17 +143,29 @@ export default function ChatWidget() {
               </div>
             ))}
             
-            {messages.length === 1 && !isLeadCaptured && (
+            {!isLeadCaptured && !isLoading && (
               <div className="quick-actions">
-                {quickActions.map((action, idx) => (
-                  <button 
-                    key={idx} 
-                    className="quick-action-btn"
-                    onClick={() => handleQuickAction(action.query)}
-                  >
-                    {action.label}
-                  </button>
-                ))}
+                {showServiceOptions ? (
+                  serviceActions.map((action, idx) => (
+                    <button 
+                      key={idx} 
+                      className="quick-action-btn"
+                      onClick={() => handleQuickAction(action.query)}
+                    >
+                      {action.label}
+                    </button>
+                  ))
+                ) : (
+                  messages.length === 1 && mainActions.map((action, idx) => (
+                    <button 
+                      key={idx} 
+                      className="quick-action-btn"
+                      onClick={() => handleQuickAction(action.query)}
+                    >
+                      {action.label}
+                    </button>
+                  ))
+                )}
               </div>
             )}
 

@@ -4,7 +4,7 @@ import './CategoryCard.css';
 export default function CategoryCard({ category }) {
   return (
     <Link
-      href={`/products?category=${category.slug}`}
+      href={category.path || `/products?category=${category.slug}`}
       className="category-card"
       id={`category-${category.slug}`}
     >

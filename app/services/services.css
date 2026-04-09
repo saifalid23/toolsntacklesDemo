@@ -1,0 +1,152 @@
+.services-page {
+  padding-bottom: 4rem;
+  background-color: #f9fafb;
+}
+
+.services-header {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  color: white;
+  padding: 6rem 0;
+  text-align: center;
+}
+
+.services-title {
+  font-family: var(--font-outfit);
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  letter-spacing: -0.025em;
+}
+
+.services-subtitle {
+  font-size: 1.25rem;
+  opacity: 0.9;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.services-grid-section {
+  padding: 5rem 0;
+  margin-top: -3rem;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.service-card {
+  background: white;
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.service-icon-wrap {
+  width: 4rem;
+  height: 4rem;
+  background: #f1f5f9;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.service-icon {
+  font-size: 2rem;
+}
+
+.service-card-title {
+  font-family: var(--font-outfit);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 0.75rem;
+}
+
+.service-card-desc {
+  color: #64748b;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+}
+
+.book-repair-btn {
+  background: #1e293b;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  align-self: flex-start;
+}
+
+.book-repair-btn:hover {
+  background: #334155;
+}
+
+.service-cta-banner {
+  padding: 4rem 0;
+}
+
+.cta-banner-content {
+  background: #3b82f6;
+  color: white;
+  padding: 3rem;
+  border-radius: 1.5rem;
+  text-align: center;
+}
+
+.cta-banner-content h2 {
+  font-family: var(--font-outfit);
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.cta-banner-content p {
+  font-size: 1.125rem;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+
+.cta-primary-btn {
+  background: white;
+  color: #3b82f6;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.cta-primary-btn:hover {
+  transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+  .services-title {
+    font-size: 2.25rem;
+  }
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
+  .cta-banner-content {
+    padding: 2rem;
+  }
+}
