@@ -103,10 +103,38 @@ export default function ChatWidget() {
         }),
       });
 
-      const data = await response.json();
-      if (data.error) throw new Error(data.error);
+      const contentType = response.headers.get('Content-Type');
+      
+      if (contentType && contentType.includes('application/json')) {
+        // Fast Path (KB/Cache) hit
+        const data = await response.json();
+        if (data.error) throw new Error(data.error);
+        setMessages(prev => [...prev, { role: 'assistant', content: data.content }]);
+      } else {
+        // Streaming Path (Gemini)
+        setMessages(prev => [...prev, { role: 'assistant', content: '' }]);
+        
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let assistantText = '';
 
-      setMessages(prev => [...prev, { role: 'assistant', content: data.content }]);
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          
+          const chunk = decoder.decode(value, { stream: true });
+          assistantText += chunk;
+          
+          setMessages(prev => {
+            const next = [...prev];
+            const lastMsg = next[next.length - 1];
+            if (lastMsg.role === 'assistant') {
+              lastMsg.content = assistantText;
+            }
+            return next;
+          });
+        }
+      }
     } catch (error) {
       console.error('Chat Error:', error);
       setMessages(prev => [...prev, { 

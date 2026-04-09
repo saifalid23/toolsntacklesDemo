@@ -1,6 +1,14 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { searchKB } from '@/lib/knowledgeBase';
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+
+// Simple in-memory cache for common queries
+const queryCache = {
+  'where are you located?': 'We are located in Ranigunj, Secunderabad.',
+  'what are your timings?': 'Monday to Saturday, 10:00 AM to 8:00 PM. Closed Sundays.',
+  'do you provide repair services?': 'Yes, we provide professional repair for all major power tool brands, including armature replacement and carbon brush changes.',
+};
 
 export async function POST(req) {
   try {
@@ -13,69 +21,80 @@ export async function POST(req) {
       });
     }
 
-    // System instruction persona (The "Brain")
+    const latestMessage = String(messages[messages.length - 1].content).trim();
+    const normalizedQuery = latestMessage.toLowerCase().replace(/[?]/g, '');
+
+    // Step 1: Check In-Memory Cache
+    if (queryCache[normalizedQuery]) {
+      return new Response(JSON.stringify({ content: queryCache[normalizedQuery] }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    // Step 2: Check Knowledge Base (KB Lookup)
+    const kbResult = searchKB(latestMessage);
+    if (kbResult) {
+      return new Response(JSON.stringify({ content: kbResult }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    // Step 3: Call Gemini with Slimmed Prompt & Streaming
     const systemInstruction = 
-      `You are the official AI Assistant for The Tool Shop HYD (located in Ranigunj, Secunderabad).
-
-Identity:
-- You MUST identify yourself as 'The Tool Shop HYD Assistant' in your very first greeting.
-- Always be professional, helpful, and extremely concise.
-
-Strict Formatting Rules (CRITICAL):
-- All responses must be under 3 sentences.
-- Use bullet points for any lists.
-- PROHIBITED: Do not dump large amounts of data. Be brief.
-
-Interaction Flow:
-- If asked "What else do you sell?" or similar wide catalog queries:
-    1. List ONLY the main categories: • Power Tools, • Hand Tools, • Accessories.
-    2. Ask: "Which category are you interested in?"
-- Service Intent: If a user mentions "Service" or "Repair", guide them to specify the tool.
-
-Knowledge Base:
-- Sales: We sell Drills, Grinders, Saws, and Hand Tools from Bosch, DeWalt, and Makita.
-- Services: We provide professional repair (Armature, Carbon Brush, Switch, etc.) for all major power tool brands.
-- Pricing: Tell users: 'Prices vary. Please visit our Ranigunj store for the best quote!'
-- Hours: Monday–Saturday, 10:00 AM to 8:00 PM. Closed Sundays.
-
-Bulk Intent Detection:
-- If the user mentions quantities (5+ units), wholesale, or project supplies, say: 'We offer wholesale rates! Please share your Name and Phone Number so our manager can call you.'
-
-Security Guardrails:
-- Strict Focus: ONLY tools, repairs, or a tool-related joke.
-- Redirection: For other topics, say: 'I can only assist with tools and repairs at The Tool Shop HYD.'`;
+      `You are the official AI Assistant for The Tool Shop HYD. 
+      Identify yourself as 'The Tool Shop HYD Assistant' in your first greeting.
+      Be concise (max 2-3 sentences). 
+      Use bullet points for lists. 
+      Limit your domain to tools, repairs, and shop-related info.
+      
+      KB CONTEXT: Use the knowledge base snippet if provided below. If not, use your general knowledge but redirect to the Ranigunj store for specifics.
+      - Shop: Ranigunj, Secunderabad.
+      - Hours: Mon-Sat 10AM-8PM.
+      - Services: Armature, Carbon Brush, Switch, Gearbox, etc.`;
 
     const model = genAI.getGenerativeModel({ 
-      model: 'gemini-3.1-flash-lite-preview',
+      model: 'gemini-1.5-flash', // Using a standard stable model
       systemInstruction: systemInstruction
     });
 
-    // Gemini expects history in [{ role: 'user' | 'model', parts: [{ text: string }] }] format
-    // It also REQUIRES the first message in history to be from the 'user'
     let history = messages.slice(0, -1).map(msg => ({
       role: msg.role === 'user' ? 'user' : 'model',
       parts: [{ text: msg.content }],
     }));
 
-    // Remove leading 'model' messages if any (like the initial greeting)
     while (history.length > 0 && history[0].role === 'model') {
       history.shift();
     }
 
-    const latestMessage = String(messages[messages.length - 1].content);
+    const chat = model.startChat({ history });
+    const result = await chat.sendMessageStream(latestMessage);
 
-    const chat = model.startChat({
-      history: history,
+    // Create a ReadableStream for streaming response
+    const stream = new ReadableStream({
+      async start(controller) {
+        try {
+          for await (const chunk of result.stream) {
+            const chunkText = chunk.text();
+            if (chunkText) {
+              controller.enqueue(new TextEncoder().encode(chunkText));
+            }
+          }
+          controller.close();
+        } catch (err) {
+          controller.error(err);
+        }
+      },
     });
 
-    const result = await chat.sendMessage(latestMessage);
-    const response = await result.response;
-    const text = response.text();
-
-    return new Response(JSON.stringify({ content: text }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
+    return new Response(stream, {
+      headers: {
+        'Content-Type': 'text/plain; charset=utf-8',
+        'Transfer-Encoding': 'chunked',
+      },
     });
+
   } catch (error) {
     console.error('Gemini API Error:', error);
     return new Response(JSON.stringify({ error: 'Failed to fetch response from AI' }), {
