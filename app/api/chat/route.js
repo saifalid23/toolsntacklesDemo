@@ -42,7 +42,7 @@ export async function POST(req) {
     }
 
     // Step 3: Call Gemini with Slimmed Prompt & Streaming
-    const systemInstruction = 
+    const systemInstruction =
       `You are the official AI Assistant for The Tool Shop HYD. 
       Identify yourself as 'The Tool Shop HYD Assistant' in your first greeting.
       Be concise (max 2-3 sentences). 
@@ -54,8 +54,8 @@ export async function POST(req) {
       - Hours: Mon-Sat 10AM-8PM.
       - Services: Armature, Carbon Brush, Switch, Gearbox, etc.`;
 
-    const model = genAI.getGenerativeModel({ 
-      model: 'gemini-1.5-flash', // Using a standard stable model
+    const model = genAI.getGenerativeModel({
+      model: 'gemini-2.5-pro', // Using a standard stable model
       systemInstruction: systemInstruction
     });
 
